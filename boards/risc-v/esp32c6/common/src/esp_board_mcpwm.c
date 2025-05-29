@@ -92,7 +92,26 @@ int board_motor_initialize(void)
   ret = motor_register("/dev/motor0", motor);
   if (ret < 0)
     {
-      syslog(LOG_ERR, "ERROR: motor_register failed: %d\n", ret);
+      syslog(LOG_ERR, "ERROR: motor_register for motor0 failed: %d\n", ret);
+      return ret;
+    }
+#endif
+#ifdef CONFIG_ESP_MCPWM_MOTOR_CH1
+  motor = esp_motor_bdc_initialize(1,
+                                   CONFIG_ESP_MCPWM_MOTOR_CH0_PWM_FREQ,
+                                   CONFIG_ESP_MCPWM_MOTOR_CH1_PWMA_GPIO,
+                                   CONFIG_ESP_MCPWM_MOTOR_CH1_PWMB_GPIO,
+                                   MCPWM_FAULT_GPIO);
+  if (motor == NULL)
+    {
+      syslog(LOG_ERR, "ERROR: Failed to start MCPWM BDC Motor: CH0\n");
+      return -ENODEV;
+    }
+
+  ret = motor_register("/dev/motor1", motor);
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "ERROR: motor_register for motor1 failed: %d\n", ret);
       return ret;
     }
 #endif

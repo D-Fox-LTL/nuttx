@@ -337,6 +337,21 @@ static struct mcpwm_motor_lowerhalf_s mcpwm_bdc_ch0_lowerhalf =
 #endif
 };
 #endif /* CONFIG_ESP_MCPWM_MOTOR_BDC_CH0 && CONFIG_ESP_MCPWM_MOTOR_BDC */
+#if defined(CONFIG_ESP_MCPWM_MOTOR_CH1) &&\
+    defined(CONFIG_ESP_MCPWM_MOTOR_BDC)
+static struct mcpwm_motor_lowerhalf_s mcpwm_bdc_ch1_lowerhalf =
+{
+  .ops          = &mcpwm_motor_ops,
+  .common       = &g_mcpwm_common,
+  .channel_id   = MCPWM_MOTOR_CHANNEL_1,
+  .timer_id     = MCPWM_TIMER_0,
+  .operator_id  = MCPWM_OPERATOR_1,
+  .counter_peak = PEAK_COUNTER,
+#ifdef ESP_MCPMW_MOTOR_FAULT
+  .fault_id     = MCPWM_FAULT_0,
+#endif
+};
+#endif /* CONFIG_ESP_MCPWM_MOTOR_BDC_CH1 && CONFIG_ESP_MCPWM_MOTOR_BDC */
 #endif /* CONFIG_ESP_MCPWM_MOTOR */
 
 #ifdef CONFIG_ESP_MCPWM_CAPTURE
@@ -1911,6 +1926,10 @@ struct motor_lowerhalf_s *esp_motor_bdc_initialize(int channel,
     {
       case 0:
         lower = &mcpwm_bdc_ch0_lowerhalf;
+        lower->pwm_frequency = frequency;
+        break;
+      case 1:
+        lower = &mcpwm_bdc_ch1_lowerhalf;
         lower->pwm_frequency = frequency;
         break;
       default:
