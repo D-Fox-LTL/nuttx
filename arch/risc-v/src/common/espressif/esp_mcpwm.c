@@ -351,7 +351,22 @@ static struct mcpwm_motor_lowerhalf_s mcpwm_bdc_ch1_lowerhalf =
   .fault_id     = MCPWM_FAULT_0,
 #endif
 };
-#endif /* CONFIG_ESP_MCPWM_MOTOR_BDC_CH1 && CONFIG_ESP_MCPWM_MOTOR_BDC */
+#endif /* CONFIG_ESP_MCPWM_MOTOR_BDC_CH2 && CONFIG_ESP_MCPWM_MOTOR_BDC */
+#if defined(CONFIG_ESP_MCPWM_MOTOR_CH2) &&\
+    defined(CONFIG_ESP_MCPWM_MOTOR_BDC)
+static struct mcpwm_motor_lowerhalf_s mcpwm_bdc_ch1_lowerhalf =
+{
+  .ops          = &mcpwm_motor_ops,
+  .common       = &g_mcpwm_common,
+  .channel_id   = MCPWM_MOTOR_CHANNEL_2,
+  .timer_id     = MCPWM_TIMER_0,
+  .operator_id  = MCPWM_OPERATOR_2,
+  .counter_peak = PEAK_COUNTER,
+#ifdef ESP_MCPMW_MOTOR_FAULT
+  .fault_id     = MCPWM_FAULT_0,
+#endif
+};
+#endif /* CONFIG_ESP_MCPWM_MOTOR_BDC_CH2 && CONFIG_ESP_MCPWM_MOTOR_BDC */
 #endif /* CONFIG_ESP_MCPWM_MOTOR */
 
 #ifdef CONFIG_ESP_MCPWM_CAPTURE
