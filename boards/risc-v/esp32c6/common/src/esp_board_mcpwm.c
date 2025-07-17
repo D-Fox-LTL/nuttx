@@ -115,6 +115,25 @@ int board_motor_initialize(void)
       return ret;
     }
 #endif
+#ifdef CONFIG_ESP_MCPWM_MOTOR_CH2
+  motor = esp_motor_bdc_initialize(2,
+                                   CONFIG_ESP_MCPWM_MOTOR_CH0_PWM_FREQ,
+                                   CONFIG_ESP_MCPWM_MOTOR_CH2_PWMA_GPIO,
+                                   CONFIG_ESP_MCPWM_MOTOR_CH2_PWMB_GPIO,
+                                   MCPWM_FAULT_GPIO);
+  if (motor == NULL)
+    {
+      syslog(LOG_ERR, "ERROR: Failed to start MCPWM BDC Motor: CH0\n");
+      return -ENODEV;
+    }
+
+  ret = motor_register("/dev/motor2", motor);
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "ERROR: motor_register for motor1 failed: %d\n", ret);
+      return ret;
+    }
+#endif
 
   return OK;
 }
