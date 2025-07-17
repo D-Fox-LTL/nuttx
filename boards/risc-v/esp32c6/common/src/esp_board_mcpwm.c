@@ -130,7 +130,7 @@ int board_motor_initialize(void)
   ret = motor_register("/dev/motor2", motor);
   if (ret < 0)
     {
-      syslog(LOG_ERR, "ERROR: motor_register for motor1 failed: %d\n", ret);
+      syslog(LOG_ERR, "ERROR: motor_register for motor2 failed: %d\n", ret);
       return ret;
     }
 #endif
